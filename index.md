@@ -2,9 +2,14 @@
 layout: default
 title: Bedrock-agents-elasticsearch-demo
 ---
-<!-- Minimal Mermaid enable (page-local) -->
+<!-- Mermaid (page-local) -->
 <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
-<script>mermaid.initialize({startOnLoad:true, securityLevel:'loose'});</script>
+<script>
+  window.addEventListener('load', function () {
+    if (window.mermaid) mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' });
+  });
+</script>
+
 
 This project demonstrates how to build an intelligent search layer using tool calling and building analytics layer on top of Uber receipts using **AWS Bedrock Agents** and **Elasticsearch**.
 
