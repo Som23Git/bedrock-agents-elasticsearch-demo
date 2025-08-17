@@ -1,6 +1,5 @@
 # Bedrock-agents-elasticsearch-demo
 
-
 This project demonstrates how to build an intelligent search layer using tool calling and building analytics layer on top of Uber receipts using **AWS Bedrock Agents** and **Elasticsearch**.
 
 **Uber Receipts** from Gmail are parsed with **Google Apps Script** to extract structured trip details (pickup, drop-off, fare, duration, promotions, driver, etc.). These records are stored as **NDJSON** and ingested into an Elasticsearch index with semantic embeddings generated through the **Amazon Titan v2 embedding model**.
@@ -299,4 +298,47 @@ INFO:     44.246.220.86:0 - "GET /topTrips/byField?sort_order=asc&field=duration
 
 ### AWS Setup
 
+- Login to your AWS Account and the specific region. Go to AWS Bedrock. Make sure, you have `IAM Permissions` set to use the `Bedrock Agents`.
 
+- Create a `Bedrock Agent`.
+
+![create_bedrock_agent](assets/create_bedrock_agent.png)
+
+![agent_builder_01](assets/agent_builder_01.png)
+
+- Under Instructions for the Agent, copy-paste this [prompt](docs/prompt.aws_agent.md).
+
+- Add a new `Action Groups` with the `openAPI schema` and the `Lambda function`.
+
+![agent_builder_02](assets/agent_builder_02.png)
+
+![agent_builder_03](assets/agent_builder_03.png)
+
+- Copy-paste the `openAPI Schema 3.0.0` from [here.](docs/openapi_schema.aws_agent.json) and save the Agent Buider.
+
+- Now, the Agent Builder, create a new Lambda function for us. Let's go to `AWS Lambda` and `update the code` as [here.](src/lambda_function.py).
+
+- Also, as the [`requests` dependencies](src/lambda_dependency_function.zip) are unvailable, I have bundled it so, we can directly import it from Lambda and finally, deploy the Lambda code. Make sure to update the `NGROK` Public Url.
+
+![aws_lambda_function](assets/aws_lambda_function.png)
+
+_**Quick Tip: Enable Cloudwatch logs to understand what's happening in the Lambda side**_
+
+- Once, Lambda is deployed successfully, you can go back to Agent Builder and please hit `save`, let it load for a couple of seconds and hit `Prepare` to `Test` the agent.
+
+![agent_builder_04](assets/agent_builder_04.png)
+
+- Now, let's ask the questions to test the agent.
+
+![agent_builder_05](assets/agent_builder_05.png)
+![agent_builder_06](assets/agent_builder_06.png)
+
+- That's it. Start to play around with the questions on the Uber trips and try to modify the Fast APIs and queries. You can check the logs in the `Python Fast API application` as well.
+
+-----
+
+### Additional References:
+
+- Basic Queries to test in Kibana DevTools, refer [queries.md](docs/queries.md).
+
+----
