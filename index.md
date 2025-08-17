@@ -2,13 +2,6 @@
 layout: default
 title: Bedrock-agents-elasticsearch-demo
 ---
-<!-- Mermaid (page-local) -->
-<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
-<script>
-  window.addEventListener('load', function () {
-    if (window.mermaid) mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' });
-  });
-</script>
 
 
 This project demonstrates how to build an intelligent search layer using tool calling and building analytics layer on top of Uber receipts using **AWS Bedrock Agents** and **Elasticsearch**.
@@ -34,30 +27,7 @@ An **AWS Bedrock Agent** acts as the conversational layer, **_for basic checks_*
 Here's the quick overview from `user perspective`:
 
 
-```mermaid
-sequenceDiagram
-  autonumber
-  participant U as User
-  participant A as AWS Agent (Bedrock)
-  participant L as AWS Lambda (Tool Exec)
-  participant F as FastAPI (ES proxy)
-  participant E as Elasticsearch
-  participant H as Bedrock LLM (Claude 3 Haiku)
-
-  U->>A: "What were my last 5 trips in 2025?"
-  A->>H: NL understanding / planning
-  H-->>A: Decide tool = "searchTrips" (KNN+date filter)
-  A->>L: Invoke tool with params {text:"last 5 trips...", year:2025}
-  L->>F: HTTP POST /searchTrips?year=2025&k=5
-  F->>E: DSL: knn on trip_summary.inference.chunks.embeddings\n+ range trip_date[2025-01-01..2025-12-31]\n+ sort desc
-  E-->>F: Hits (_source includes fields, scores)
-  F-->>L: JSON results
-  L-->>A: Tool result payload
-  A->>H: "Format answer nicely" (few-shot formatting)
-  H-->>U: Natural language summary + list
-
-  Note over F,E: Embeddings created at ingest via ES Inference API\n(model_id: bedrock-embeddings → Titan v2, 1024 dims)
-```
+![Sequence Diagram](assets/mermaid_sequence_diagram.png)
 
 ### Data Flow Chart
 
