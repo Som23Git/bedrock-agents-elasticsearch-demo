@@ -1,0 +1,9 @@
+title: Bedrock + Elasticsearch Uber Demo
+theme: jekyll-theme-cayman
+url: https://som23git.github.io
+baseurl: /bedrock-agents-elasticsearch-demo
+
+header_pages:
+  - index.md
+
+permalink: pretty
