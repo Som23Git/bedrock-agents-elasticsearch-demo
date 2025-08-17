@@ -1,5 +1,6 @@
 # Bedrock-agents-elasticsearch-demo
 
+
 This project demonstrates how to build an intelligent search layer using tool calling and building analytics layer on top of Uber receipts using **AWS Bedrock Agents** and **Elasticsearch**.
 
 **Uber Receipts** from Gmail are parsed with **Google Apps Script** to extract structured trip details (pickup, drop-off, fare, duration, promotions, driver, etc.). These records are stored as **NDJSON** and ingested into an Elasticsearch index with semantic embeddings generated through the **Amazon Titan v2 embedding model**.

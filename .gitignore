@@ -1,0 +1,7 @@
+venv
+charts.md
+mermaid_chart_draft.mmd
+__pycache__
+.env
+uber_trips_extracted.ndjson
+.DS_Store

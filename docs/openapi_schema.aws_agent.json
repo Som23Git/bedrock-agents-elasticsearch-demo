@@ -1,0 +1,556 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Uber Trip Intelligence API",
+    "description": "Query Uber trip data with semantic, metric, and aggregation-based queries. Compatible with Claude 3.5 and AWS Bedrock Agents.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/searchTrips": {
+      "get": {
+        "tags": [
+          "Search Trips"
+        ],
+        "summary": "Search Trips",
+        "description": "Use only for semantic vector search when user gives vague text like 'last 5 trips' or natural phrasing. Avoid using this for metrics like total, average, etc.",
+        "operationId": "searchTrips",
+        "parameters": [
+          {
+            "name": "model_text",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Text query from the user, e.g. 'last 5 trips in 2025'"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 5
+            },
+            "description": "Number of trips to return"
+          },
+          {
+            "name": "date_gte",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Start date in YYYY-MM-DD format"
+          },
+          {
+            "name": "date_lte",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "End date in YYYY-MM-DD format"
+          },
+          {
+            "name": "sort_order",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "desc"
+            },
+            "description": "Sort order by trip_date, either 'asc' or 'desc'"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TripResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/topTrips/byField": {
+      "get": {
+        "tags": [
+          "Top Trips"
+        ],
+        "summary": "Top Trips By Field",
+        "description": "Retrieve top N trips by sorting on a specific field like fare or duration.",
+        "operationId": "topTrips",
+        "parameters": [
+          {
+            "name": "field",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Field to sort by (e.g. total_fare_inr, duration_minutes, distance_km, promotion_inr)"
+          },
+          {
+            "name": "sort_order",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "desc"
+            },
+            "description": "Sort order: asc or desc"
+          },
+          {
+            "name": "date_gte",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "2025-01-01"
+            },
+            "description": "Start date"
+          },
+          {
+            "name": "date_lte",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "2025-12-31"
+            },
+            "description": "End date"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 5
+            },
+            "description": "Number of top results"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TripResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/locations/pickup/top": {
+      "get": {
+        "tags": [
+          "Frequent Locations"
+        ],
+        "summary": "Top Pickup Locations",
+        "description": "Returns the most frequent pickup locations in a given year.",
+        "operationId": "pickupTopLocations",
+        "parameters": [
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 5
+            },
+            "description": "Top N locations to return"
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "2025"
+            },
+            "description": "Year to filter trips"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/locations/dropoff/top": {
+      "get": {
+        "tags": [
+          "Frequent Locations"
+        ],
+        "summary": "Top Dropoff Locations",
+        "description": "Returns the most frequent dropoff locations in a given year.",
+        "operationId": "dropoffTopLocations",
+        "parameters": [
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 5
+            },
+            "description": "Top N locations to return"
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "2025"
+            },
+            "description": "Year to filter trips"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stats/frequentTimeIST": {
+      "get": {
+        "tags": [
+          "Time-based Stats"
+        ],
+        "summary": "Frequent Half-Hour IST Intervals",
+        "description": "Returns the most common travel time intervals in IST (30-minute buckets).",
+        "operationId": "frequentTimeIST",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stats/fareStatsByTimeIST": {
+      "get": {
+        "tags": [
+          "Time-based Stats"
+        ],
+        "summary": "Fare Stats by Half-Hour IST Intervals",
+        "description": "Provides average, max, min, and median fare grouped by 30-minute travel times in IST. Use this endpoint when the user asks about fares by time, including average, min, max, or median.",
+        "operationId": "fareStatsByTimeIST",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/topTrips/stats/totalDistance": {
+      "get": {
+        "tags": [
+          "Stats"
+        ],
+        "summary": "Total Distance Traveled",
+        "description": "Returns the total distance (in kilometers) traveled between two dates.Use this for calculating how much distance (in km) was traveled over a time period.",
+        "operationId": "totalDistance",
+        "parameters": [
+          {
+            "name": "date_gte",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "2025-01-01"
+            },
+            "description": "Start date in YYYY-MM-DD format"
+          },
+          {
+            "name": "date_lte",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "2025-12-31"
+            },
+            "description": "End date in YYYY-MM-DD format"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Total distance response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "total_distance_km": {
+                      "type": "number",
+                      "example": 512.75
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/topTrips/stats/totalDuration": {
+      "get": {
+        "tags": [
+          "Stats"
+        ],
+        "summary": "Total Duration Traveled",
+        "description": "Returns the total travel duration in minutes and hours between two dates.Use this endpoint when the user asks for total time spent traveling. Accepts date range filters.",
+        "operationId": "totalDuration",
+        "parameters": [
+          {
+            "name": "date_gte",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "2025-01-01"
+            },
+            "description": "Start date in YYYY-MM-DD format"
+          },
+          {
+            "name": "date_lte",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "2025-12-31"
+            },
+            "description": "End date in YYYY-MM-DD format"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Total duration response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "total_duration_minutes": {
+                      "type": "number",
+                      "example": 932
+                    },
+                    "total_duration_hours": {
+                      "type": "number",
+                      "example": 15.53
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/topTrips/stats/totalFare": {
+      "get": {
+        "tags": [
+          "Stats"
+        ],
+        "summary": "Total Fare Spent",
+        "description": "Returns the total fare (in INR) spent between two dates. Use this for computing the total amount spent on trips during a specific time period or month. Useful for 'total expense' queries.",
+        "operationId": "totalFare",
+        "parameters": [
+          {
+            "name": "date_gte",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "2025-01-01"
+            },
+            "description": "Start date in YYYY-MM-DD format"
+          },
+          {
+            "name": "date_lte",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "2025-12-31"
+            },
+            "description": "End date in YYYY-MM-DD format"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Total fare response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "total_fare_inr": {
+                      "type": "number",
+                      "example": 3287.5
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "TripSummary": {
+        "type": "object",
+        "required": [
+          "trip_date",
+          "driver",
+          "fare"
+        ],
+        "properties": {
+          "trip_date": {
+            "type": "string",
+            "example": "2025-07-12"
+          },
+          "driver": {
+            "type": "string",
+            "example": "Abdul"
+          },
+          "fare": {
+            "type": "number",
+            "example": 365.45
+          }
+        }
+      },
+      "TripResponse": {
+        "type": "object",
+        "required": [
+          "summary_text"
+        ],
+        "properties": {
+          "summary_text": {
+            "type": "string"
+          },
+          "trips": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TripSummary"
+            }
+          }
+        }
+      },
+      "HTTPValidationError": {
+        "type": "object",
+        "properties": {
+          "detail": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            }
+          }
+        }
+      },
+      "ValidationError": {
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "properties": {
+          "loc": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "msg": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
