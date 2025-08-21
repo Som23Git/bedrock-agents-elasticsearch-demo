@@ -1,0 +1,14 @@
+{
+  "trip_date": "2025-07-12",
+  "pickup_timestamp": "2025-07-12T15:53:00+05:30",
+  "dropoff_timestamp": "2025-07-12T16:57:00+05:30",
+  "pickup_location": "139, Kavignar Bharathidasan Rd, Teynampet, Chennai, Tamil Nadu 600018, India",
+  "dropoff_location": "V P Singh Nagar, Ponniammanmedu, Chennai, Tamil Nadu 600110, India",
+  "driver": "Abdul",
+  "distance_km": 17.29,
+  "trip_charge_inr": 429.94,
+  "promotion_inr": -64.49,
+  "total_fare_inr": 365.45,
+  "duration_minutes": 64,
+  "summary_text": "Trip taken on 2025-07-12. On 12th of July 2025, you took an Uber ride from 139, Kavignar Bharathidasan Rd, Teynampet, Chennai, Tamil Nadu 600018, India to V P Singh Nagar, Ponniammanmedu, Chennai, Tamil Nadu 600110, India. The trip started at 15:53 and ended at 16:57, lasting 64 minutes and covering 17.29 kilometers. Your driver was Abdul. The total fare was INR 365.45 after a promotion of INR 64.49 was applied to the original trip charge of INR 429.94."
+}

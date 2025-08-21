@@ -6,3 +6,5 @@ __pycache__
 uber_trips_extracted.ndjson
 .DS_Store
 slides-marp.md
+.vscode
+assets/aws_bedrock_elasticsearch_demo_video.mp4
