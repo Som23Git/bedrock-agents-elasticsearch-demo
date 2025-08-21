@@ -22,6 +22,10 @@ An **AWS Bedrock Agent** acts as the conversational layer, **_for basic checks_*
 
 -----
 
+### High Level Architecture
+
+![high_level_architecture](assets/high_level_architecture.png)
+
 ### Sequence Diagram
 
 Here's the quick overview from `user perspective`:
