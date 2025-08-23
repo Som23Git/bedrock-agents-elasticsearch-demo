@@ -327,7 +327,7 @@ _**Quick Tip: Enable Cloudwatch logs to understand what's happening in the Lambd
 - [Usage of Built-in GMail Connectors](https://www.elastic.co/docs/reference/search-connectors/es-connectors-gmail)
 - [Elastic Playground, a quick overview](https://www.elastic.co/docs/solutions/search/rag/playground)
 
-### Low-Level Anologies:
+### Low-Level Analogies:
 
 - [How Elastic plays a bigger role in Vector Space](https://www.elastic.co/search-labs/blog/elasticsearch-opensearch-vector-search-performance-comparison)
 - [Let's dive deeper on Elasticsearch BBQ vs Opensearch FAISS](https://www.elastic.co/search-labs/blog/elasticsearch-bbq-vs-opensearch-faiss)
