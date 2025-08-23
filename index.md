@@ -325,5 +325,10 @@ _**Quick Tip: Enable Cloudwatch logs to understand what's happening in the Lambd
 ### Additional References:
 
 - Basic Queries to test in Kibana DevTools, refer [queries.md](docs/queries.md).
+- [How start with Semantic Search in Elastic](https://www.elastic.co/docs/solutions/search/semantic-search/semantic-search-inference#infer-text-embedding-task)
+- [What are Search Approaches, why is it important?](https://www.elastic.co/docs/solutions/search/search-approaches)
+- [Let's learn to build your Search Queries](https://www.elastic.co/docs/solutions/search/querying-for-search)
+- [Usage of Built-in GMail Connectors](https://www.elastic.co/docs/reference/search-connectors/es-connectors-gmail)
+- [Elastic Playground, a quick overview](https://www.elastic.co/docs/solutions/search/rag/playground)
 
 ----

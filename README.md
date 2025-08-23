@@ -18,35 +18,16 @@ An **AWS Bedrock Agent** acts as the conversational layer, **_for basic checks_*
 
 -----
 
+### High Level Architecture
+
+![high_level_architecture](assets/high_level_architecture.png)
+
 ### Sequence Diagram
 
 Here's the quick overview from `user perspective`:
 
 
-```mermaid
-sequenceDiagram
-  autonumber
-  participant U as User
-  participant A as AWS Agent (Bedrock)
-  participant L as AWS Lambda (Tool Exec)
-  participant F as FastAPI (ES proxy)
-  participant E as Elasticsearch
-  participant H as Bedrock LLM (Claude 3 Haiku)
-
-  U->>A: "What were my last 5 trips in 2025?"
-  A->>H: NL understanding / planning
-  H-->>A: Decide tool = "searchTrips" (KNN+date filter)
-  A->>L: Invoke tool with params {text:"last 5 trips...", year:2025}
-  L->>F: HTTP POST /searchTrips?year=2025&k=5
-  F->>E: DSL: knn on trip_summary.inference.chunks.embeddings\n+ range trip_date[2025-01-01..2025-12-31]\n+ sort desc
-  E-->>F: Hits (_source includes fields, scores)
-  F-->>L: JSON results
-  L-->>A: Tool result payload
-  A->>H: "Format answer nicely" (few-shot formatting)
-  H-->>U: Natural language summary + list
-
-  Note over F,E: Embeddings created at ingest via ES Inference API\n(model_id: bedrock-embeddings → Titan v2, 1024 dims)
-```
+![Sequence Diagram](assets/mermaid_sequence_diagram.png)
 
 ### Data Flow Chart
 
@@ -340,6 +321,10 @@ _**Quick Tip: Enable Cloudwatch logs to understand what's happening in the Lambd
 ### Additional References:
 
 - Basic Queries to test in Kibana DevTools, refer [queries.md](docs/queries.md).
+- [How start with Semantic Search in Elastic](https://www.elastic.co/docs/solutions/search/semantic-search/semantic-search-inference#infer-text-embedding-task)
+- [What are Search Approaches, why is it important?](https://www.elastic.co/docs/solutions/search/search-approaches)
+- [Let's learn to build your Search Queries](https://www.elastic.co/docs/solutions/search/querying-for-search)
+- [Usage of Built-in GMail Connectors](https://www.elastic.co/docs/reference/search-connectors/es-connectors-gmail)
+- [Elastic Playground, a quick overview](https://www.elastic.co/docs/solutions/search/rag/playground)
 
 ----
-
